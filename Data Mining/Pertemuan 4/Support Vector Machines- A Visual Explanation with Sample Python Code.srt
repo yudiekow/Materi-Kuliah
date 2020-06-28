@@ -1,0 +1,1944 @@
+1
+00:00:00,260 --> 00:00:02,879
+hi everyone today I'll be talking about
+
+2
+00:00:02,879 --> 00:00:05,520
+support vector machines you can find all
+
+3
+00:00:05,520 --> 00:00:07,589
+my sample Python code on github
+
+4
+00:00:07,589 --> 00:00:11,910
+a dash of data first I'll go through
+
+5
+00:00:11,910 --> 00:00:14,580
+some SVM basics starting with a visual
+
+6
+00:00:14,580 --> 00:00:16,410
+introduction and then a step-by-step
+
+7
+00:00:16,410 --> 00:00:18,300
+walkthrough some sample code in Python
+
+8
+00:00:18,300 --> 00:00:20,490
+and then I'll talk about how you can
+
+9
+00:00:20,490 --> 00:00:22,710
+fine tune your model with some
+
+10
+00:00:22,710 --> 00:00:24,539
+additional complexities and then I'll
+
+11
+00:00:24,539 --> 00:00:28,230
+give you my final thoughts on SVM so
+
+12
+00:00:28,230 --> 00:00:30,029
+let's start with what is a support
+
+13
+00:00:30,029 --> 00:00:32,219
+vector machine well it's a
+
+14
+00:00:32,219 --> 00:00:34,469
+classification technique so what does
+
+15
+00:00:34,469 --> 00:00:36,660
+that mean so let's say we had all these
+
+16
+00:00:36,660 --> 00:00:39,000
+blue dots and all these teal desks and I
+
+17
+00:00:39,000 --> 00:00:42,030
+asked you to classify this data so
+
+18
+00:00:42,030 --> 00:00:45,239
+another way to say that is if I had
+
+19
+00:00:45,239 --> 00:00:47,670
+asked you to split the data well what
+
+20
+00:00:47,670 --> 00:00:50,370
+would you do you could split the data
+
+21
+00:00:50,370 --> 00:00:55,140
+this way or this way or this way all of
+
+22
+00:00:55,140 --> 00:00:57,539
+those ways work but what if I asked you
+
+23
+00:00:57,539 --> 00:00:59,760
+to split the data in the best possible
+
+24
+00:00:59,760 --> 00:01:03,000
+way well then you probably say that this
+
+25
+00:01:03,000 --> 00:01:06,510
+line best splits that data so at the end
+
+26
+00:01:06,510 --> 00:01:08,310
+of the day that's essentially what a
+
+27
+00:01:08,310 --> 00:01:10,500
+support vector machine is it's this
+
+28
+00:01:10,500 --> 00:01:13,320
+model that best splits this blue and
+
+29
+00:01:13,320 --> 00:01:17,130
+teal sections so why is this the best
+
+30
+00:01:17,130 --> 00:01:21,119
+flip well let's say that that line in
+
+31
+00:01:21,119 --> 00:01:23,340
+the middle there that that's the meeting
+
+32
+00:01:23,340 --> 00:01:26,070
+of the road and that these are the two
+
+33
+00:01:26,070 --> 00:01:29,460
+lanes of the road so in this case this
+
+34
+00:01:29,460 --> 00:01:31,770
+is the widest roads that separates these
+
+35
+00:01:31,770 --> 00:01:34,710
+two groups so if we go back and look at
+
+36
+00:01:34,710 --> 00:01:37,140
+some of those other lines that we had
+
+37
+00:01:37,140 --> 00:01:38,880
+used to split the data you can see that
+
+38
+00:01:38,880 --> 00:01:42,000
+they create some pretty narrow roads but
+
+39
+00:01:42,000 --> 00:01:45,479
+this one here this is the widest road
+
+40
+00:01:45,479 --> 00:01:48,299
+that separates the two groups look at in
+
+41
+00:01:48,299 --> 00:01:50,399
+some more technical terms now so instead
+
+42
+00:01:50,399 --> 00:01:52,409
+of saying this is the widest road that
+
+43
+00:01:52,409 --> 00:01:54,600
+separates the two groups we can say that
+
+44
+00:01:54,600 --> 00:01:56,880
+this is the widest margin that separates
+
+45
+00:01:56,880 --> 00:02:00,000
+the two groups another way to say this
+
+46
+00:02:00,000 --> 00:02:02,520
+is the distance between the points and
+
+47
+00:02:02,520 --> 00:02:06,170
+this line are as far as possible so
+
+48
+00:02:06,170 --> 00:02:09,750
+again these points here these can also
+
+49
+00:02:09,750 --> 00:02:11,490
+be called support vectors
+
+50
+00:02:11,490 --> 00:02:14,220
+and this line here this can be called
+
+51
+00:02:14,220 --> 00:02:16,740
+the hyperplane okay so those are all our
+
+52
+00:02:16,740 --> 00:02:20,700
+technical terms so let's summarize all
+
+53
+00:02:20,700 --> 00:02:23,160
+this again if I had asked you to split
+
+54
+00:02:23,160 --> 00:02:25,530
+this data in the best way possible we
+
+55
+00:02:25,530 --> 00:02:28,770
+can now say that this is the hyperplane
+
+56
+00:02:28,770 --> 00:02:31,350
+that best splits the data because it's
+
+57
+00:02:31,350 --> 00:02:33,480
+as far as possible from these support
+
+58
+00:02:33,480 --> 00:02:35,880
+vectors here which is another way of
+
+59
+00:02:35,880 --> 00:02:39,810
+saying we have maximized the margin okay
+
+60
+00:02:39,810 --> 00:02:43,350
+so how do you maximize the margin well
+
+61
+00:02:43,350 --> 00:02:45,450
+this is actually a constrained
+
+62
+00:02:45,450 --> 00:02:47,970
+optimization problem so there's two
+
+63
+00:02:47,970 --> 00:02:49,320
+parts there is a constraint and the
+
+64
+00:02:49,320 --> 00:02:51,260
+optimization piece let's break it down
+
+65
+00:02:51,260 --> 00:02:53,640
+the reason that you're trying to
+
+66
+00:02:53,640 --> 00:02:56,040
+optimize something is because in this
+
+67
+00:02:56,040 --> 00:02:58,530
+case we're trying to maximize the margin
+
+68
+00:02:58,530 --> 00:03:00,450
+and the reason that there are
+
+69
+00:03:00,450 --> 00:03:03,090
+constraints is because our constraint
+
+70
+00:03:03,090 --> 00:03:06,300
+here is that being staff here they can't
+
+71
+00:03:06,300 --> 00:03:08,130
+be on the road they have to be away from
+
+72
+00:03:08,130 --> 00:03:10,260
+the road so we have our constraints and
+
+73
+00:03:10,260 --> 00:03:12,450
+we have our optimization so this is a
+
+74
+00:03:12,450 --> 00:03:15,330
+constrained optimization problem the way
+
+75
+00:03:15,330 --> 00:03:16,890
+to solve a constrained optimization
+
+76
+00:03:16,890 --> 00:03:19,470
+problem is to use Lagrange multipliers
+
+77
+00:03:19,470 --> 00:03:22,350
+which involve quite a bit more math so
+
+78
+00:03:22,350 --> 00:03:23,730
+I'm not going to go through it here in
+
+79
+00:03:23,730 --> 00:03:28,230
+detail but now we've covered the basics
+
+80
+00:03:28,230 --> 00:03:30,960
+visually of how SVM works so now what
+
+81
+00:03:30,960 --> 00:03:33,180
+well let's apply this to a real-world
+
+82
+00:03:33,180 --> 00:03:36,690
+problem so my other passion in life
+
+83
+00:03:36,690 --> 00:03:39,480
+second to data science just a 2-second
+
+84
+00:03:39,480 --> 00:03:43,380
+to data science is baking so these are
+
+85
+00:03:43,380 --> 00:03:44,790
+all things that I've baked in the past
+
+86
+00:03:44,790 --> 00:03:47,280
+and the one I wanted to focus on here
+
+87
+00:03:47,280 --> 00:03:51,240
+are these cupcakes so every time that I
+
+88
+00:03:51,240 --> 00:03:52,020
+make cupcakes
+
+89
+00:03:52,020 --> 00:03:54,390
+my husband I always have this debate on
+
+90
+00:03:54,390 --> 00:03:56,280
+cupcakes versus muffins
+
+91
+00:03:56,280 --> 00:03:58,650
+he thinks that they're exactly the same
+
+92
+00:03:58,650 --> 00:04:00,660
+thing except that cupcake just has
+
+93
+00:04:00,660 --> 00:04:02,610
+frosting and a muffin has random
+
+94
+00:04:02,610 --> 00:04:05,100
+business stuff in it so being the
+
+95
+00:04:05,100 --> 00:04:08,040
+experience bigger than I am I completely
+
+96
+00:04:08,040 --> 00:04:10,980
+disagree and I just know that cupcakes
+
+97
+00:04:10,980 --> 00:04:12,870
+and muffins are inherently different
+
+98
+00:04:12,870 --> 00:04:15,060
+like they're batter is different and so
+
+99
+00:04:15,060 --> 00:04:17,820
+I decided to challenge myself and create
+
+100
+00:04:17,820 --> 00:04:20,430
+a classifier to classify recipes as
+
+101
+00:04:20,430 --> 00:04:23,820
+cupcakes or muffins so that way once
+
+102
+00:04:23,820 --> 00:04:25,080
+I've built my model
+
+103
+00:04:25,080 --> 00:04:26,939
+when I give my model a new recipe it
+
+104
+00:04:26,939 --> 00:04:28,770
+should automatically predict whether
+
+105
+00:04:28,770 --> 00:04:30,840
+that recipe is a cupcake recipe or a
+
+106
+00:04:30,840 --> 00:04:33,960
+muffin recipe so there are three steps I
+
+107
+00:04:33,960 --> 00:04:36,449
+need to take to do this first I need to
+
+108
+00:04:36,449 --> 00:04:39,150
+find the data then I'll apply a data
+
+109
+00:04:39,150 --> 00:04:40,979
+science model which in this case will be
+
+110
+00:04:40,979 --> 00:04:43,650
+SEM and then finally I'll review the
+
+111
+00:04:43,650 --> 00:04:47,569
+results so first let's find that data
+
+112
+00:04:47,569 --> 00:04:50,639
+all the way I did this was I went to
+
+113
+00:04:50,639 --> 00:04:53,430
+Google and I googled basic math and
+
+114
+00:04:53,430 --> 00:04:56,729
+recipe and basic cupcake recipe and I
+
+115
+00:04:56,729 --> 00:04:59,280
+recorded the top ten muffin and top ten
+
+116
+00:04:59,280 --> 00:05:03,360
+cupcake recipes so surprisingly muffins
+
+117
+00:05:03,360 --> 00:05:05,819
+and cupcakes just has eight ingredients
+
+118
+00:05:05,819 --> 00:05:08,250
+in them and then also surprisingly with
+
+119
+00:05:08,250 --> 00:05:10,710
+all twenty recipes were different there
+
+120
+00:05:10,710 --> 00:05:13,740
+were no duplicates in there but then as
+
+121
+00:05:13,740 --> 00:05:15,300
+I started looking into this data I
+
+122
+00:05:15,300 --> 00:05:18,750
+noticed that there were some problems my
+
+123
+00:05:18,750 --> 00:05:20,699
+main problem was that each recipe
+
+124
+00:05:20,699 --> 00:05:23,490
+yielded a different amount of batter so
+
+125
+00:05:23,490 --> 00:05:26,639
+one cupcake recipe might have had one
+
+126
+00:05:26,639 --> 00:05:28,979
+cup of flour another cupcake recipe
+
+127
+00:05:28,979 --> 00:05:32,150
+would have four cups of flour and
+
+128
+00:05:32,150 --> 00:05:34,560
+because those always were so different
+
+129
+00:05:34,560 --> 00:05:36,539
+if I were to put that data straight into
+
+130
+00:05:36,539 --> 00:05:39,419
+my model it would actually see those two
+
+131
+00:05:39,419 --> 00:05:41,520
+recipes as being completely different
+
+132
+00:05:41,520 --> 00:05:43,440
+even though they were both cupcakes so I
+
+133
+00:05:43,440 --> 00:05:45,120
+realized the first thing I had to do was
+
+134
+00:05:45,120 --> 00:05:48,419
+normalize my data and the way I did this
+
+135
+00:05:48,419 --> 00:05:50,490
+was I took my data from being amount
+
+136
+00:05:50,490 --> 00:05:53,370
+based so for instance here we have
+
+137
+00:05:53,370 --> 00:05:56,580
+lesson 1 having 2 cups of flour 1/2 cup
+
+138
+00:05:56,580 --> 00:05:59,520
+of sugar and so on 2 percent base so
+
+139
+00:05:59,520 --> 00:06:03,210
+black and one is 47 percent flour 24
+
+140
+00:06:03,210 --> 00:06:07,050
+percent sugar and so on and so at the
+
+141
+00:06:07,050 --> 00:06:08,759
+end of the day this is what my data look
+
+142
+00:06:08,759 --> 00:06:11,159
+like you can see for every row I've
+
+143
+00:06:11,159 --> 00:06:13,409
+labeled it as a muffin or cupcake and
+
+144
+00:06:13,409 --> 00:06:16,169
+then I have all my ingredients here and
+
+145
+00:06:16,169 --> 00:06:21,240
+each row adds up to 100% all right I
+
+146
+00:06:21,240 --> 00:06:24,000
+found my data so the next step is to
+
+147
+00:06:24,000 --> 00:06:27,990
+apply a data science model so to do this
+
+148
+00:06:27,990 --> 00:06:30,150
+I wrote a python script and Jupiter
+
+149
+00:06:30,150 --> 00:06:33,330
+notebook so I followed six steps here
+
+150
+00:06:33,330 --> 00:06:34,770
+and I'll go through each of them in
+
+151
+00:06:34,770 --> 00:06:38,879
+detail first is to import library
+
+152
+00:06:38,879 --> 00:06:41,339
+so I imported libraries for
+
+153
+00:06:41,339 --> 00:06:44,099
+analysis you can see pandas numpy and
+
+154
+00:06:44,099 --> 00:06:47,099
+scikit-learn and then I imported another
+
+155
+00:06:47,099 --> 00:06:50,069
+couple libraries for visuals so we have
+
+156
+00:06:50,069 --> 00:06:52,379
+math live here and then see one to make
+
+157
+00:06:52,379 --> 00:06:56,279
+things beautiful the next thing I did
+
+158
+00:06:56,279 --> 00:06:59,879
+was I imported my data so from my pandas
+
+159
+00:06:59,879 --> 00:07:02,449
+library I use the read dot CSV function
+
+160
+00:07:02,449 --> 00:07:05,339
+and you can see that the data looks
+
+161
+00:07:05,339 --> 00:07:10,080
+pretty good here and then before I set
+
+162
+00:07:10,080 --> 00:07:12,509
+my model what I always like to do is
+
+163
+00:07:12,509 --> 00:07:14,729
+visualize the data to see if it makes
+
+164
+00:07:14,729 --> 00:07:17,099
+sense so I find that out of the eight
+
+165
+00:07:17,099 --> 00:07:19,379
+ingredients I wanted to plot two of
+
+166
+00:07:19,379 --> 00:07:21,599
+those ingredients so in this case I
+
+167
+00:07:21,599 --> 00:07:24,360
+chose sugar and butter because I baked
+
+168
+00:07:24,360 --> 00:07:26,789
+for a long time and I just had a feeling
+
+169
+00:07:26,789 --> 00:07:30,360
+that those two ingredients would be most
+
+170
+00:07:30,360 --> 00:07:33,360
+likely to differentiate my cupcakes and
+
+171
+00:07:33,360 --> 00:07:35,669
+so when I created the scatter plot here
+
+172
+00:07:35,669 --> 00:07:38,039
+you can see I was right those muffins
+
+173
+00:07:38,039 --> 00:07:40,289
+are on the bottom left there and they
+
+174
+00:07:40,289 --> 00:07:42,119
+have very little sugar and very little
+
+175
+00:07:42,119 --> 00:07:42,479
+butter
+
+176
+00:07:42,479 --> 00:07:44,969
+whereas cupcakes have a ton of sugar a
+
+177
+00:07:44,969 --> 00:07:47,550
+ton of butter and so when you look at
+
+178
+00:07:47,550 --> 00:07:48,809
+this you can see it's actually a pretty
+
+179
+00:07:48,809 --> 00:07:54,059
+good candidate for SCM so the next I'm
+
+180
+00:07:54,059 --> 00:07:57,329
+going to do is fit the model so we had
+
+181
+00:07:57,329 --> 00:08:00,089
+talked about sugar and butter before so
+
+182
+00:08:00,089 --> 00:08:02,039
+I'm going to use those two ingredients
+
+183
+00:08:02,039 --> 00:08:05,339
+as inputs from a model and then I'm also
+
+184
+00:08:05,339 --> 00:08:08,099
+going to input all the labels so that
+
+185
+00:08:08,099 --> 00:08:09,929
+one column as you saw before that had
+
+186
+00:08:09,929 --> 00:08:12,740
+all the muffins and cupcakes labels and
+
+187
+00:08:12,740 --> 00:08:15,659
+then I'm going to put the mental model
+
+188
+00:08:15,659 --> 00:08:19,469
+here so you can see that I'm using SB m
+
+189
+00:08:19,469 --> 00:08:23,639
+dot @ CC so what s EC stands for is
+
+190
+00:08:23,639 --> 00:08:25,889
+support vector classifier so there's
+
+191
+00:08:25,889 --> 00:08:29,009
+also SBR which is for regressions the
+
+192
+00:08:29,009 --> 00:08:32,188
+best not use as commonly but you need to
+
+193
+00:08:32,188 --> 00:08:34,769
+specify SVC for classification which is
+
+194
+00:08:34,769 --> 00:08:36,659
+what support vectors are typically used
+
+195
+00:08:36,659 --> 00:08:39,509
+for and then also here you see that I
+
+196
+00:08:39,509 --> 00:08:41,849
+set the kernel equal to linear I'm going
+
+197
+00:08:41,849 --> 00:08:43,438
+to talk about kernel a little bit more
+
+198
+00:08:43,438 --> 00:08:46,410
+later on the presentation but just one
+
+199
+00:08:46,410 --> 00:08:49,079
+to let you know that for the basic case
+
+200
+00:08:49,079 --> 00:08:50,580
+you want to set kernel equal
+
+201
+00:08:50,580 --> 00:08:53,330
+here and then you can fit your model and
+
+202
+00:08:53,330 --> 00:08:55,500
+on the bottom there you can see our
+
+203
+00:08:55,500 --> 00:08:58,560
+output so that output doesn't mean much
+
+204
+00:08:58,560 --> 00:09:03,240
+so let's visualize it okay so the
+
+205
+00:09:03,240 --> 00:09:05,160
+visualization steps are actually quite
+
+206
+00:09:05,160 --> 00:09:06,660
+lengthy I'm going to go through them
+
+207
+00:09:06,660 --> 00:09:08,970
+quickly but you can review the code in
+
+208
+00:09:08,970 --> 00:09:12,630
+detail on github so here I created a
+
+209
+00:09:12,630 --> 00:09:17,130
+hyper plane along with the dotted lines
+
+210
+00:09:17,130 --> 00:09:21,660
+for the margins and I'm plotting all of
+
+211
+00:09:21,660 --> 00:09:26,790
+that on to a plot that you see here so
+
+212
+00:09:26,790 --> 00:09:29,280
+on the left you can see that this is our
+
+213
+00:09:29,280 --> 00:09:31,830
+X fan model and on the right you can see
+
+214
+00:09:31,830 --> 00:09:34,730
+that we've maximized the margin all
+
+215
+00:09:34,730 --> 00:09:37,770
+right so now I've applied a data science
+
+216
+00:09:37,770 --> 00:09:40,620
+model so the next step is to review the
+
+217
+00:09:40,620 --> 00:09:43,680
+results see if they make sense so just
+
+218
+00:09:43,680 --> 00:09:45,240
+to reiterate the challenge was to
+
+219
+00:09:45,240 --> 00:09:47,340
+classify recipes as cupcakes or muffins
+
+220
+00:09:47,340 --> 00:09:53,010
+and when given a new recipe determine if
+
+221
+00:09:53,010 --> 00:09:56,040
+it's a cupcake or a muffin recipe so
+
+222
+00:09:56,040 --> 00:09:58,950
+let's go back to our code so what I've
+
+223
+00:09:58,950 --> 00:10:00,480
+done here is I've applauded one
+
+224
+00:10:00,480 --> 00:10:02,430
+additional point that you'll apply right
+
+225
+00:10:02,430 --> 00:10:06,260
+there and that's a new recipe and so
+
+226
+00:10:06,260 --> 00:10:08,820
+visually you can tell that that recipe
+
+227
+00:10:08,820 --> 00:10:10,770
+is supposed to be a muffin because with
+
+228
+00:10:10,770 --> 00:10:13,350
+all those bright dots but we want our
+
+229
+00:10:13,350 --> 00:10:15,930
+model to predict that automatically so
+
+230
+00:10:15,930 --> 00:10:19,230
+let's see if I model can do that so here
+
+231
+00:10:19,230 --> 00:10:21,060
+i've created a function called
+
+232
+00:10:21,060 --> 00:10:23,340
+muffin or cupcake and what we need to do
+
+233
+00:10:23,340 --> 00:10:25,470
+is input the amount of butter and sugar
+
+234
+00:10:25,470 --> 00:10:28,080
+that that recipe has and then I'll tell
+
+235
+00:10:28,080 --> 00:10:31,200
+you the answer there down here I put in
+
+236
+00:10:31,200 --> 00:10:33,630
+my new recipe that has 12 parts butter
+
+237
+00:10:33,630 --> 00:10:36,360
+and 12 part sugar and it tells us that
+
+238
+00:10:36,360 --> 00:10:39,210
+we are looking at a muffin which is
+
+239
+00:10:39,210 --> 00:10:40,830
+correct based on the visual on last
+
+240
+00:10:40,830 --> 00:10:45,360
+slide so at the end of the day we see
+
+241
+00:10:45,360 --> 00:10:48,240
+that muffins and cupcakes are not the
+
+242
+00:10:48,240 --> 00:10:49,590
+same thing but they're actually
+
+243
+00:10:49,590 --> 00:10:51,720
+different and you can classify them
+
+244
+00:10:51,720 --> 00:10:54,570
+using support vector machine so I want
+
+245
+00:10:54,570 --> 00:10:57,980
+that argument all right
+
+246
+00:10:57,980 --> 00:11:01,280
+so that was our basic case so let's talk
+
+247
+00:11:01,280 --> 00:11:03,790
+about how to make SVM even more powerful
+
+248
+00:11:03,790 --> 00:11:06,770
+so there are four things that I wanted
+
+249
+00:11:06,770 --> 00:11:08,270
+to go through in this additional
+
+250
+00:11:08,270 --> 00:11:10,610
+complexity section starting with higher
+
+251
+00:11:10,610 --> 00:11:16,810
+dimensions so for the last bit of slides
+
+252
+00:11:16,810 --> 00:11:18,980
+we've been working with two dimensions
+
+253
+00:11:18,980 --> 00:11:21,530
+sugar and butter and we were able to
+
+254
+00:11:21,530 --> 00:11:24,860
+separate that using a line so let's say
+
+255
+00:11:24,860 --> 00:11:27,290
+we wanted to add another dimension so
+
+256
+00:11:27,290 --> 00:11:29,870
+let's say flour and we would have three
+
+257
+00:11:29,870 --> 00:11:31,910
+dimensions and we could separate that
+
+258
+00:11:31,910 --> 00:11:34,700
+data with a plane let's say we had four
+
+259
+00:11:34,700 --> 00:11:37,490
+dimensions in that case we'd separate
+
+260
+00:11:37,490 --> 00:11:39,530
+our data with a hyperplane but it gets
+
+261
+00:11:39,530 --> 00:11:42,320
+pretty hard to visualize so here's the
+
+262
+00:11:42,320 --> 00:11:43,640
+cool thing even though it's hard to
+
+263
+00:11:43,640 --> 00:11:45,950
+visualize it's actually very easy to
+
+264
+00:11:45,950 --> 00:11:51,710
+code so here is our original code and we
+
+265
+00:11:51,710 --> 00:11:53,920
+were putting in the butter and sugar
+
+266
+00:11:53,920 --> 00:11:56,660
+ingredients you can see that data right
+
+267
+00:11:56,660 --> 00:11:58,850
+there so let's say we didn't want to
+
+268
+00:11:58,850 --> 00:12:00,650
+just get two dimensions but we wanted to
+
+269
+00:12:00,650 --> 00:12:03,530
+get all eight ingredients well all we
+
+270
+00:12:03,530 --> 00:12:05,810
+have to do is input all eight
+
+271
+00:12:05,810 --> 00:12:09,100
+ingredients here and the code will
+
+272
+00:12:09,100 --> 00:12:11,750
+automatically take this information and
+
+273
+00:12:11,750 --> 00:12:14,720
+run the models and so the reason that we
+
+274
+00:12:14,720 --> 00:12:16,520
+want to add in more dimensions is
+
+275
+00:12:16,520 --> 00:12:18,950
+because with more dimensions there's the
+
+276
+00:12:18,950 --> 00:12:22,040
+opportunity to further maximize that
+
+277
+00:12:22,040 --> 00:12:26,690
+margin and create a better model okay
+
+278
+00:12:26,690 --> 00:12:30,650
+moving on to C parameter so on the left
+
+279
+00:12:30,650 --> 00:12:32,690
+here you can see this is the data that
+
+280
+00:12:32,690 --> 00:12:34,430
+we've been working with and we were able
+
+281
+00:12:34,430 --> 00:12:37,180
+to separate it with a line pretty easily
+
+282
+00:12:37,180 --> 00:12:39,590
+but I actually hid one piece of data
+
+283
+00:12:39,590 --> 00:12:41,660
+from you so this is what the original
+
+284
+00:12:41,660 --> 00:12:43,880
+data actually looked like and you can
+
+285
+00:12:43,880 --> 00:12:46,670
+tell there's this red dot on the top of
+
+286
+00:12:46,670 --> 00:12:49,280
+the screen there and if we were to
+
+287
+00:12:49,280 --> 00:12:52,190
+create that line on the left you see
+
+288
+00:12:52,190 --> 00:12:53,890
+that that red actually gets
+
+289
+00:12:53,890 --> 00:12:56,510
+misclassified so this is where the C
+
+290
+00:12:56,510 --> 00:12:59,300
+parameter comes in so the C parameter
+
+291
+00:12:59,300 --> 00:13:01,250
+allowed you to decide how much you want
+
+292
+00:13:01,250 --> 00:13:04,970
+to penalize is misclassified points if
+
+293
+00:13:04,970 --> 00:13:06,860
+you look at our original code again you
+
+294
+00:13:06,860 --> 00:13:08,630
+can see the C parameter was hiding in
+
+295
+00:13:08,630 --> 00:13:09,470
+our output here
+
+296
+00:13:09,470 --> 00:13:12,950
+so the default value for the C parameter
+
+297
+00:13:12,950 --> 00:13:17,840
+is 1 but you can vary it so here are
+
+298
+00:13:17,840 --> 00:13:20,150
+some visuals to helps but understand
+
+299
+00:13:20,150 --> 00:13:22,760
+this so on the left here I've given the
+
+300
+00:13:22,760 --> 00:13:25,460
+SVM model a low C value 2 to the
+
+301
+00:13:25,460 --> 00:13:27,890
+negative fifth and on the right a high
+
+302
+00:13:27,890 --> 00:13:32,360
+of C value 2 to the fifth and so you can
+
+303
+00:13:32,360 --> 00:13:35,240
+see the difference in the two models
+
+304
+00:13:35,240 --> 00:13:39,710
+here on the left the model just allows
+
+305
+00:13:39,710 --> 00:13:41,540
+that point to be in the classified and
+
+306
+00:13:41,540 --> 00:13:43,790
+on the right there's known the
+
+307
+00:13:43,790 --> 00:13:47,330
+classification so on the left here with
+
+308
+00:13:47,330 --> 00:13:50,690
+a low C parameter we are prioritizing
+
+309
+00:13:50,690 --> 00:13:55,730
+simplicity so this line here is also
+
+310
+00:13:55,730 --> 00:13:56,300
+called
+
+311
+00:13:56,300 --> 00:13:58,700
+a line with a soft margin because we're
+
+312
+00:13:58,700 --> 00:14:01,880
+allowing that miss classification on the
+
+313
+00:14:01,880 --> 00:14:04,580
+right here we're prioritizing making a
+
+314
+00:14:04,580 --> 00:14:07,520
+few mistakes as possible so there is few
+
+315
+00:14:07,520 --> 00:14:11,390
+mistakes here but in this case we're
+
+316
+00:14:11,390 --> 00:14:13,850
+probably overfitting because this model
+
+317
+00:14:13,850 --> 00:14:17,330
+is just so close to all those blue
+
+318
+00:14:17,330 --> 00:14:19,730
+points if you were to bring in a new
+
+319
+00:14:19,730 --> 00:14:22,790
+recipe in the future it might actually
+
+320
+00:14:22,790 --> 00:14:25,880
+classify that incorrectly so how do you
+
+321
+00:14:25,880 --> 00:14:28,580
+pick the best C parameter well what you
+
+322
+00:14:28,580 --> 00:14:31,520
+need to do is try different values see
+
+323
+00:14:31,520 --> 00:14:34,010
+all the way from let's say 2 to negative
+
+324
+00:14:34,010 --> 00:14:36,650
+fist to 2 to the positive fist and then
+
+325
+00:14:36,650 --> 00:14:39,050
+see what the best C value is for your
+
+326
+00:14:39,050 --> 00:14:42,890
+model all right
+
+327
+00:14:42,890 --> 00:14:45,110
+let's also talk about multiple classes
+
+328
+00:14:45,110 --> 00:14:48,710
+so one cool thing about SPMS is it
+
+329
+00:14:48,710 --> 00:14:51,710
+doesn't just classify two classes it's
+
+330
+00:14:51,710 --> 00:14:53,780
+also able to classify more than two
+
+331
+00:14:53,780 --> 00:14:56,690
+classes so in this case I've added some
+
+332
+00:14:56,690 --> 00:14:58,490
+green dots here and these are your
+
+333
+00:14:58,490 --> 00:15:00,680
+skills so this is what it's going with
+
+334
+00:15:00,680 --> 00:15:03,860
+Clyde clickers that don't know and with
+
+335
+00:15:03,860 --> 00:15:07,310
+SVM you can actually classify your data
+
+336
+00:15:07,310 --> 00:15:09,470
+into three different groups here so on
+
+337
+00:15:09,470 --> 00:15:11,570
+the Left we have our muffins in red we
+
+338
+00:15:11,570 --> 00:15:14,060
+have our cupcakes and the right we have
+
+339
+00:15:14,060 --> 00:15:17,750
+our green stuff so how can you do that
+
+340
+00:15:17,750 --> 00:15:21,290
+in the code very easily so all you need
+
+341
+00:15:21,290 --> 00:15:22,660
+to do is add
+
+342
+00:15:22,660 --> 00:15:24,879
+a parameter called decision function
+
+343
+00:15:24,879 --> 00:15:27,879
+sheet and you can set it equal to OB r
+
+344
+00:15:27,879 --> 00:15:32,680
+or ovo so what are those ways so OB R
+
+345
+00:15:32,680 --> 00:15:35,470
+means one versus rest so what it does is
+
+346
+00:15:35,470 --> 00:15:38,410
+if you had let's say here he had three
+
+347
+00:15:38,410 --> 00:15:39,730
+different groups that you want to
+
+348
+00:15:39,730 --> 00:15:43,149
+classify what OVR would do is it would
+
+349
+00:15:43,149 --> 00:15:47,110
+try its best to classify the blue group
+
+350
+00:15:47,110 --> 00:15:49,569
+versus all the rest of the data create
+
+351
+00:15:49,569 --> 00:15:52,449
+that hyperplane and then it would try to
+
+352
+00:15:52,449 --> 00:15:54,189
+separate the red group from the rest of
+
+353
+00:15:54,189 --> 00:15:57,370
+the data and then the remaining data it
+
+354
+00:15:57,370 --> 00:16:00,310
+was put into the green group on the
+
+355
+00:16:00,310 --> 00:16:03,189
+other hand its ovo so it will compare
+
+356
+00:16:03,189 --> 00:16:07,209
+all the classes separately and create a
+
+357
+00:16:07,209 --> 00:16:09,370
+hyperplane for each one of them and then
+
+358
+00:16:09,370 --> 00:16:12,040
+combine all that information so there's
+
+359
+00:16:12,040 --> 00:16:15,189
+some pros and cons to both here so the
+
+360
+00:16:15,189 --> 00:16:17,800
+pro to the OVR approach is that there
+
+361
+00:16:17,800 --> 00:16:19,779
+are fewer classifications that need to
+
+362
+00:16:19,779 --> 00:16:22,420
+be made so let's say we were actually
+
+363
+00:16:22,420 --> 00:16:25,240
+classifying ten different groups well in
+
+364
+00:16:25,240 --> 00:16:27,699
+that case we would have to create nine
+
+365
+00:16:27,699 --> 00:16:30,130
+different models so we create a model
+
+366
+00:16:30,130 --> 00:16:32,889
+for one versus rest for every single
+
+367
+00:16:32,889 --> 00:16:34,889
+class and then for that tenth class
+
+368
+00:16:34,889 --> 00:16:37,930
+that's just where the remaining data
+
+369
+00:16:37,930 --> 00:16:42,100
+goes and then for the ovo technique if
+
+370
+00:16:42,100 --> 00:16:46,660
+you were to classify every class against
+
+371
+00:16:46,660 --> 00:16:48,370
+the other with ten different classes
+
+372
+00:16:48,370 --> 00:16:50,620
+there it's actually a combination of 10
+
+373
+00:16:50,620 --> 00:16:53,050
+ticks 2 which is 45 different
+
+374
+00:16:53,050 --> 00:16:55,000
+classifications it takes a very long
+
+375
+00:16:55,000 --> 00:16:58,810
+time with the pro to the ovo technique
+
+376
+00:16:58,810 --> 00:17:01,120
+is that it's less sensitive ten balanced
+
+377
+00:17:01,120 --> 00:17:04,539
+so let's look at the left side there the
+
+378
+00:17:04,539 --> 00:17:07,380
+OVR side so if you were to classify the
+
+379
+00:17:07,380 --> 00:17:11,530
+blue group versus say nine other groups
+
+380
+00:17:11,530 --> 00:17:14,740
+that blue group is really small the nine
+
+381
+00:17:14,740 --> 00:17:16,539
+other groups might just overpower that
+
+382
+00:17:16,539 --> 00:17:19,270
+pieces and to say that nothing is part
+
+383
+00:17:19,270 --> 00:17:23,109
+of that blue class so that's a bit of
+
+384
+00:17:23,109 --> 00:17:25,750
+imbalance right there whereas on the ovo
+
+385
+00:17:25,750 --> 00:17:28,089
+side that won't happen as much could use
+
+386
+00:17:28,089 --> 00:17:30,700
+comparing one class at a time so it's
+
+387
+00:17:30,700 --> 00:17:34,360
+really up to you what technique you want
+
+388
+00:17:34,360 --> 00:17:37,190
+all right finally I want to talk about
+
+389
+00:17:37,190 --> 00:17:38,179
+the kernel trick
+
+390
+00:17:38,179 --> 00:17:40,580
+so no SVM presentation is complete
+
+391
+00:17:40,580 --> 00:17:43,640
+without the kernel trick so let's say
+
+392
+00:17:43,640 --> 00:17:46,549
+that we had this data on the left here
+
+393
+00:17:46,549 --> 00:17:49,190
+we have red dots and some blue dots and
+
+394
+00:17:49,190 --> 00:17:54,100
+I asked you to draw a hyperplane to
+
+395
+00:17:54,100 --> 00:17:59,169
+separate that data could you do it
+
+396
+00:17:59,169 --> 00:18:01,909
+you'll probably try to draw a line like
+
+397
+00:18:01,909 --> 00:18:06,110
+this and that doesn't work well we're
+
+398
+00:18:06,110 --> 00:18:10,039
+still able to separate this data with
+
+399
+00:18:10,039 --> 00:18:13,820
+SVM by using the kernel trick so the
+
+400
+00:18:13,820 --> 00:18:16,760
+curl trick does is think of it as adding
+
+401
+00:18:16,760 --> 00:18:20,299
+another dimension to this data so what
+
+402
+00:18:20,299 --> 00:18:22,700
+this contract does in this case you see
+
+403
+00:18:22,700 --> 00:18:26,110
+it's taken that data on the left and
+
+404
+00:18:26,110 --> 00:18:29,870
+added a dimension of Z dimension so that
+
+405
+00:18:29,870 --> 00:18:32,630
+you can now linearly separate that data
+
+406
+00:18:32,630 --> 00:18:37,250
+with a hyperplane okay so there are a
+
+407
+00:18:37,250 --> 00:18:39,710
+couple different kernel options in
+
+408
+00:18:39,710 --> 00:18:42,320
+Python there's a linear kernel radial
+
+409
+00:18:42,320 --> 00:18:43,190
+basis function
+
+410
+00:18:43,190 --> 00:18:48,529
+RBF polynomial sigmoid so I want to say
+
+411
+00:18:48,529 --> 00:18:51,679
+here you can see that even though you
+
+412
+00:18:51,679 --> 00:18:53,690
+weren't able to separate with a line in
+
+413
+00:18:53,690 --> 00:18:55,789
+two dimensions that using that kernel
+
+414
+00:18:55,789 --> 00:18:58,820
+trick if you project that track on the
+
+415
+00:18:58,820 --> 00:19:01,399
+right into 2d you can see that it
+
+416
+00:19:01,399 --> 00:19:05,059
+becomes that graph on the left okay so
+
+417
+00:19:05,059 --> 00:19:06,399
+what does this look like in the code
+
+418
+00:19:06,399 --> 00:19:10,580
+well our original code our kernel was
+
+419
+00:19:10,580 --> 00:19:13,279
+set to be linear but in our updated code
+
+420
+00:19:13,279 --> 00:19:15,529
+here you can see I've set kernel equal
+
+421
+00:19:15,529 --> 00:19:18,440
+to RBF so that's a really popular one to
+
+422
+00:19:18,440 --> 00:19:21,919
+try out and with RBF you need to set two
+
+423
+00:19:21,919 --> 00:19:23,450
+additional parameters so it's C
+
+424
+00:19:23,450 --> 00:19:26,210
+parameter and a gamma parameter so we
+
+425
+00:19:26,210 --> 00:19:28,730
+talked a little bit about C already but
+
+426
+00:19:28,730 --> 00:19:31,669
+now I want to talk more about gamma so
+
+427
+00:19:31,669 --> 00:19:34,130
+on the left here you have just our basic
+
+428
+00:19:34,130 --> 00:19:36,710
+linear kernel and I've set C equal to
+
+429
+00:19:36,710 --> 00:19:38,779
+one and then for the right to graph
+
+430
+00:19:38,779 --> 00:19:43,580
+those are two more graphs with RBF at
+
+431
+00:19:43,580 --> 00:19:45,710
+the kernel and these still equals one
+
+432
+00:19:45,710 --> 00:19:46,380
+but I
+
+433
+00:19:46,380 --> 00:19:48,540
+very the gamaheer so I buried it from to
+
+434
+00:19:48,540 --> 00:19:50,520
+the negative 5th all the ways a to data
+
+435
+00:19:50,520 --> 00:19:53,700
+first and immediately you can see the
+
+436
+00:19:53,700 --> 00:19:55,920
+difference between the two gamma values
+
+437
+00:19:55,920 --> 00:19:59,580
+so with a small gamma value there's less
+
+438
+00:19:59,580 --> 00:20:01,770
+complexity it's kind of a small p-value
+
+439
+00:20:01,770 --> 00:20:05,070
+here you're seeing it's allowing those
+
+440
+00:20:05,070 --> 00:20:07,770
+misclassifications and on the right you
+
+441
+00:20:07,770 --> 00:20:11,100
+see a bit large camera where we're
+
+442
+00:20:11,100 --> 00:20:14,010
+overfitting big time so it's pretty much
+
+443
+00:20:14,010 --> 00:20:16,560
+classifying everything as a cupcake
+
+444
+00:20:16,560 --> 00:20:18,570
+which at the end of the day if you're
+
+445
+00:20:18,570 --> 00:20:20,820
+eating muffins scones or cupcakes you
+
+446
+00:20:20,820 --> 00:20:22,380
+are essentially just eating a cupcake
+
+447
+00:20:22,380 --> 00:20:25,710
+but you can see here that it's actually
+
+448
+00:20:25,710 --> 00:20:27,510
+not a good model so you probably want
+
+449
+00:20:27,510 --> 00:20:29,880
+this lower gamma in this table but how
+
+450
+00:20:29,880 --> 00:20:32,100
+do you choose the best gamma well we're
+
+451
+00:20:32,100 --> 00:20:33,870
+going to have to try a bunch of
+
+452
+00:20:33,870 --> 00:20:36,750
+different C and gamma combinations using
+
+453
+00:20:36,750 --> 00:20:38,670
+grid search and see which one is best
+
+454
+00:20:38,670 --> 00:20:43,350
+for your data all right so that's all I
+
+455
+00:20:43,350 --> 00:20:47,310
+had for SBN I wanted to also just
+
+456
+00:20:47,310 --> 00:20:50,180
+mention when you should use Assam's so
+
+457
+00:20:50,180 --> 00:20:53,100
+about the pros there are a couple pros
+
+458
+00:20:53,100 --> 00:20:55,530
+the best fans one is that it's good at
+
+459
+00:20:55,530 --> 00:20:57,570
+dealing with high dimensional data so
+
+460
+00:20:57,570 --> 00:21:00,840
+you saw with a carl trick that it's able
+
+461
+00:21:00,840 --> 00:21:06,210
+to use high dimensions effectively also
+
+462
+00:21:06,210 --> 00:21:09,480
+it works well on small datasets so in
+
+463
+00:21:09,480 --> 00:21:11,810
+our case here we just had 20 different
+
+464
+00:21:11,810 --> 00:21:13,740
+recipes that we were looking at the
+
+465
+00:21:13,740 --> 00:21:16,590
+pretty small data set and as sample is
+
+466
+00:21:16,590 --> 00:21:19,860
+able to classify that data very well the
+
+467
+00:21:19,860 --> 00:21:22,050
+main con is that picking the right
+
+468
+00:21:22,050 --> 00:21:23,640
+kernel and then also the right
+
+469
+00:21:23,640 --> 00:21:26,580
+parameters can be very difficult and
+
+470
+00:21:26,580 --> 00:21:29,550
+computationally intensive so if you were
+
+471
+00:21:29,550 --> 00:21:35,420
+you're having to run this Sam model on
+
+472
+00:21:35,420 --> 00:21:38,490
+10 different speed parameters gamma
+
+473
+00:21:38,490 --> 00:21:40,950
+parameters that would just take a long
+
+474
+00:21:40,950 --> 00:21:45,720
+time and probably not the most effective
+
+475
+00:21:45,720 --> 00:21:49,860
+way to hold a classification model so in
+
+476
+00:21:49,860 --> 00:21:51,630
+that case there are some other
+
+477
+00:21:51,630 --> 00:21:53,160
+classification techniques you can use
+
+478
+00:21:53,160 --> 00:21:58,200
+that I've listed here and there's no set
+
+479
+00:21:58,200 --> 00:22:00,330
+way of figuring out which
+
+480
+00:22:00,330 --> 00:22:02,820
+his best my advice to you would be just
+
+481
+00:22:02,820 --> 00:22:04,860
+to try multiple techniques on your data
+
+482
+00:22:04,860 --> 00:22:07,380
+set and see which one works the best on
+
+483
+00:22:07,380 --> 00:22:10,830
+your data all right that's all I have on
+
+484
+00:22:10,830 --> 00:22:13,140
+support vector machines again you can
+
+485
+00:22:13,140 --> 00:22:15,420
+find sample Python code on github
+
+486
+00:22:15,420 --> 00:00:00,000
+- of data thanks
+
